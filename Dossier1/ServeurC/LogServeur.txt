@@ -1,0 +1,100 @@
+Thread 0: Lancement du serveur
+Thread 0: Lancement du serveur
+Thread 0: Lancement du serveur
+Thread 0: Lancement du serveur
+Thread 0: Lancement du serveur
+Thread 0: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1: Connexion réussi !!
+Thread 0: Connexion réussi !!
+Thread 1: Connexion réussi !!
+Thread 1: Connexion réussi !!
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1000: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion réussi !!
+Thread 1000: En attente d'un client
+Thread 0: Connexion réussi !!
+Thread 1000: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 1000: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1000: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1000: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1000: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1000: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: Lancement du serveur
+Thread 1000: En attente d'un client
+Thread 0: Connexion avec le client établi
+Thread 1000: En attente d'un client
+Thread 1: Connexion avec le client établi
+Thread 1: Connexion réussi !!
+Thread 0: Connexion réussi !!
+Thread 0: Fournisseur trouvé !!
+Thread 0: Ecriture dans le fichier Entrepot !!
+Thread 0: Ecriture dans le fichier Entrepot !!
+Thread 0: Ecriture dans le fichier Entrepot !!
+Thread 0: Ecriture dans le fichier Entrepot !!
+Thread 0: Ecriture dans le fichier Entrepot !!
+Thread 0: Ecriture dans le fichier Entrepot !!
