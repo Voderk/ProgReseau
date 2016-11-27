@@ -192,6 +192,7 @@ public class Applic_Appareil_Login extends javax.swing.JFrame {
                 if(rep.getChargeUtile().equals("OK"))
                 {
                     Applic_Appareil app = new Applic_Appareil(cliSock,Login,Password);
+                    ThreadUrgence thd = new ThreadUrgence(50015,app);
                     app.setVisible(true);
                     this.setVisible(false);
                 }

@@ -92,6 +92,7 @@ public class ThreadAdmin extends Thread {
                         traitListSocket();
                         break;
                     case 3:
+                        traiteStop();
                         break;
                     case 4:
                         connected = false;
@@ -209,6 +210,14 @@ public class ThreadAdmin extends Thread {
         return MySQLBean;
     }
     // </editor-fold>
+
+    private void traiteStop() {
+        try {
+            Socket s = new Socket("127.0.0.1", 50015);
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     
 }

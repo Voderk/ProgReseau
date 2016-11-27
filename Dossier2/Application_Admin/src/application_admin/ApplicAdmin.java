@@ -70,6 +70,11 @@ public class ApplicAdmin extends javax.swing.JFrame {
                 StopServerMouseClicked(evt);
             }
         });
+        StopServer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StopServerActionPerformed(evt);
+            }
+        });
 
         Refresh.setText("Refresh List");
         Refresh.setEnabled(false);
@@ -272,6 +277,30 @@ public class ApplicAdmin extends javax.swing.JFrame {
             System.err.println("Erreur ! Class not found ? [" + ex + "]");
         }
     }//GEN-LAST:event_RefreshActionPerformed
+
+    private void StopServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopServerActionPerformed
+        RequeteAdmin req = new RequeteAdmin(RequeteAdmin.STOP,"");
+        //ReponseAdmin rep = null;
+        try 
+        {
+            ObjectOutputStream oos = new ObjectOutputStream(AdminSocket.getOutputStream());
+            oos.writeObject(req);
+            oos.flush();
+            
+            
+            /*ObjectInputStream ois = new ObjectInputStream(AdminSocket.getInputStream());
+            rep = (ReponseAdmin) ois.readObject();
+            
+            initListClient(rep.getListClient());*/
+        } 
+        catch (IOException ex) 
+        {
+            System.err.println("Erreur ! Pas de connexion ? [" + ex + "]");
+        } 
+        /*catch (ClassNotFoundException ex) {
+            System.err.println("Erreur ! Class not found ? [" + ex + "]");
+        }*/
+    }//GEN-LAST:event_StopServerActionPerformed
 
     /**
      * @param args the command line arguments
