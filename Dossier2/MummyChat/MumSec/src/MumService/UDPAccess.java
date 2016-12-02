@@ -31,8 +31,8 @@ public class UDPAccess {
     {
         try {
             DatagramPacket dp;
-            byte[] buf = new byte[512];
-            dp = new DatagramPacket(buf, 512);
+            byte[] buf = new byte[500];
+            dp = new DatagramPacket(buf, 500);
             ds.receive(dp);
             return new String(dp.getData());
         } catch (IOException ex) {

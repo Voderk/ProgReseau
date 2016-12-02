@@ -23,6 +23,58 @@ import java.util.logging.Logger;
 public class TCPAccess {
     public static String readLikeC(Socket CS)
     {
+        DataInputStream dis = null;
+        StringBuffer message = new StringBuffer();
+        try {
+            
+            byte b = 0,c = 0;
+            boolean end = false, nearend = false;
+            dis = new DataInputStream( new BufferedInputStream(CS.getInputStream()));
+            while(!end)
+            {
+                b = dis.readByte();
+                if(b == '\r' && nearend == false)
+                    nearend= true;
+                else
+                {
+                    if(b== '\n' && nearend == true)
+                        end  = true;
+                    else
+                    {
+                        nearend = false;
+                        message.append((char) b);
+                    }
+                }
+            }   
+            
+        } catch (IOException ex) {
+            Logger.getLogger(TCPAccess.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return new String(message);
+    }
+    
+    public static void writeLikeC(Socket CS, String s)
+    {
+        
+        s = s +"\r\n";
+        DataOutputStream dos = null;
+        try {
+            dos = new DataOutputStream(new BufferedOutputStream(CS.getOutputStream()));
+            dos.write(s.getBytes());
+            dos.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(TCPAccess.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+         
+                
+    }
+    
+    
+}
+
+
+/*public static String readLikeC(Socket CS)
+    {
         InputStream InpStr = null;
         DataInputStream ois = null;
         StringBuffer rep= new StringBuffer();
@@ -64,5 +116,4 @@ public class TCPAccess {
             System.out.println("MumService.TCPAccess.writeLikeC() : " +ex.getMessage());
         } 
                 
-    }
-}
+    }*/
