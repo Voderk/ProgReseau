@@ -19,14 +19,12 @@ public class ThreadClient extends Thread
     private SourceTache tachesAExecuter;
     private String nom;
     private Runnable tacheEnCours;
-    private List<Socket> Client;
     private Socket So;
     
-    public ThreadClient(SourceTache st,String n,List<Socket> c)
+    public ThreadClient(SourceTache st,String n)
     {
         tachesAExecuter = st;
         nom = n;
-        Client =c;
     }
     
     public void run()

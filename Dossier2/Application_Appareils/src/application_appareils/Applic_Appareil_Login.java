@@ -120,7 +120,7 @@ public class Applic_Appareil_Login extends javax.swing.JFrame {
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkButtonActionPerformed
         String Login,Password,Message = null;
         ReponseClient rep = null;
-        
+        int portUrgence = 0;
         
         Login = LoginTextField.getText();
         Password = PasswordTextField.getText();
@@ -150,6 +150,11 @@ public class Applic_Appareil_Login extends javax.swing.JFrame {
             {
                 cliSock = new Socket("127.0.0.1", 50000);
                 System.out.println("Client connecté : " + cliSock.getInetAddress().toString());
+                
+                ObjectInputStream ois;
+                ois = new ObjectInputStream(cliSock.getInputStream());
+                portUrgence = ois.readInt();
+                
             }
             catch (UnknownHostException e)
             { System.err.println("Erreur ! Host non trouvé [" + e + "]"); }
@@ -192,7 +197,8 @@ public class Applic_Appareil_Login extends javax.swing.JFrame {
                 if(rep.getChargeUtile().equals("OK"))
                 {
                     Applic_Appareil app = new Applic_Appareil(cliSock,Login,Password);
-                    ThreadUrgence thd = new ThreadUrgence(50015,app);
+                    ThreadUrgence thd = new ThreadUrgence(portUrgence,app);
+                    thd.start();
                     app.setVisible(true);
                     this.setVisible(false);
                 }
@@ -207,8 +213,6 @@ public class Applic_Appareil_Login extends javax.swing.JFrame {
                 }
             }
         }
-        
-        
     }//GEN-LAST:event_OkButtonActionPerformed
 
     /**

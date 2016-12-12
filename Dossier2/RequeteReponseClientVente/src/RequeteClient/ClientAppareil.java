@@ -28,12 +28,12 @@ public class ClientAppareil implements Requete {
     Socket CSocket;
     private static int CONNECT = 1;
     private static int DISCONNECT = 2;
-    private static int etat = 0;
+    private int etat = 0;
     private static List<Article> BuyArticle;
     private static List<Article> ListSales;
-    private List<Socket> SocketClient;
+    private List<ClientSocket> SocketClient;
 
-    public ClientAppareil(Socket CSocket,List<Socket> c) {
+    public ClientAppareil(Socket CSocket,List<ClientSocket> c) {
         CSocket = CSocket;
         BuyArticle = new ArrayList<Article>();
         ListSales = new ArrayList<Article>();
@@ -617,7 +617,7 @@ public class ClientAppareil implements Requete {
                 if(Password.equals(TruePassword))
                 {
                     rep = new ReponseClient(1,"OK");
-                    etat = CONNECT;
+                    etat = DISCONNECT;
                 }
                 else
                 {
@@ -648,8 +648,14 @@ public class ClientAppareil implements Requete {
             Logger.getLogger(ClientAppareil.class.getName()).log(Level.SEVERE, null, ex);
         }
         etat = DISCONNECT;
-        SocketClient.remove(s);
-        
+        for(int l= 0;l<SocketClient.size();l++)
+        {
+            ClientSocket temp = SocketClient.get(l);
+            if(temp.getCSocket() == s)
+            {
+                SocketClient.remove(temp);
+            }
+        }
     }
     // </editor-fold>
     
@@ -740,13 +746,5 @@ public class ClientAppareil implements Requete {
                 Logger.getLogger(ClientAppareil.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    // </editor-fold>
-
-    
-
-    
-
-    
-   
-    
+    // </editor-fold>    
 }

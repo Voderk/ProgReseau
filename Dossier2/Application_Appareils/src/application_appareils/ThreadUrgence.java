@@ -6,6 +6,7 @@
 package application_appareils;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -36,17 +37,23 @@ public class ThreadUrgence extends Thread {
         {
             try 
             { 
+                System.out.println("ThreadUrgence ! Port: "+port);
                 ServerSocket SocketUrgence = new ServerSocket(port);
+
                 Socket s = SocketUrgence.accept();
                 
                 System.out.println("Urgence !!");
                 
-                JOptionPane.showMessageDialog(app,"Le serveur va s'arrêter !","Stop !",JOptionPane.WARNING_MESSAGE,null);
+                JOptionPane.showMessageDialog(app,"Le serveur va s'arrêter dans 60 secondes!","Stop !",JOptionPane.WARNING_MESSAGE,null);
+                Thread.sleep(5000);
+                app.StopApplic();
                 
             } 
             catch (IOException ex) 
             {
                 System.out.println("Erreur de réseau:" + ex.getMessage());
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ThreadUrgence.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

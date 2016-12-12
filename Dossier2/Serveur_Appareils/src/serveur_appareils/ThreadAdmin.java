@@ -5,6 +5,7 @@
  */
 package serveur_appareils;
 
+import RequeteClient.ClientSocket;
 import RequeteClient.RequeteAdmin;
 import RequeteReponseAdmin.ReponseAdmin;
 import java.io.IOException;
@@ -29,9 +30,9 @@ public class ThreadAdmin extends Thread {
     private int port;
     private ServerSocket SSocket;
     boolean connected = false;
-    List<Socket> Client;
+    List<ClientSocket> Client;
     
-    public ThreadAdmin(int p,List<Socket> c)
+    public ThreadAdmin(int p,List<ClientSocket> c)
     {
         port = p;
         Client = c;
@@ -95,6 +96,7 @@ public class ThreadAdmin extends Thread {
                         traiteStop();
                         break;
                     case 4:
+                        traiteLogout(req.getChargeUtile());
                         connected = false;
                         break;
 
@@ -172,13 +174,15 @@ public class ThreadAdmin extends Thread {
         ReponseAdmin rep = new ReponseAdmin();
         List<String> Socket = new ArrayList<String>();
         String temp;
+        ClientSocket tempcs;
         Socket temps;
         ObjectOutputStream oos = null;
         try
         {
             for(int i =0;i<Client.size();i++)
             {
-                temps = Client.get(i);
+                tempcs = Client.get(i);
+                temps = tempcs.getCSocket();
                 temp = temps.getInetAddress().toString() + " " + temps.getPort();
                 Socket.add(temp);
             }
@@ -213,9 +217,75 @@ public class ThreadAdmin extends Thread {
 
     private void traiteStop() {
         try {
-            Socket s = new Socket("127.0.0.1", 50015);
+            for(int i=0;i<Client.size();i++)
+            {
+                ClientSocket temp = Client.get(i);
+                Socket s = new Socket(temp.getCSocket().getInetAddress(),temp.getPortUrgence());
+                s.close();
+            }
         } catch (IOException ex) {
-            Logger.getLogger(ThreadAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Erreur réseau Admin? ["+ex.getMessage()+"]");
+        }
+    }
+
+    private void traiteLogout(String chargeUtile) {
+        ResultSet Result;
+        BeanSQL MySQLBean;
+        ReponseAdmin rep = null;
+
+        try {
+            MySQLBean = ConnexionBD();
+            StringTokenizer st = new StringTokenizer(chargeUtile,"#");
+            String Login = st.nextToken();
+            String Password = st.nextToken();
+            
+            String requete = "SELECT Password FROM loginvendeur where login like '" + Login +"'";
+            Result = MySQLBean.SQLExecuteQuery(requete);
+            boolean res = Result.next();
+            if(res)
+            {
+                
+                String TruePassword = Result.getString(1);
+
+                if(Password.equals(TruePassword))
+                {
+                    rep = new ReponseAdmin(1,"OK");
+                    connected = false;
+                }
+                else
+                {
+                    rep = new ReponseAdmin(1,"Mot de passe invalide");
+                }
+            }
+            else
+                rep = new ReponseAdmin(1,"Login invalide");
+            MySQLBean.SQLClose();
+            
+        } 
+        catch (ClassNotFoundException ex) 
+        {
+            System.out.println(ex.getMessage());
+        } 
+        catch (SQLException ex) 
+        {
+            System.out.println(ex.getMessage());
+            rep = new ReponseAdmin(-1,"Erreur de la base de donnée");
+        }
+        
+        finally
+        {
+            ObjectOutputStream oos = null;
+            try
+            {
+                oos = new ObjectOutputStream(CSocket.getOutputStream());
+                oos.writeObject(rep);
+                oos.flush();
+            }
+            catch(IOException e)
+            {
+                System.err.println("Erreur réseau ? ["+e.getMessage()+"]");
+            }
+            
         }
     }
 

@@ -17,6 +17,7 @@ public class RequeteAdmin implements Serializable {
     public static int LOGINA = 1;
     public static int LCLIENTS = 2;
     public static int STOP = 3;
+    public static int LOGOUTA = 4;
 
     private int type;
     private String chargeUtile;

@@ -5,6 +5,7 @@
  */
 package serveur_appareils;
 
+import RequeteClient.ClientSocket;
 import RequeteClient.Article;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -36,8 +37,8 @@ public class ThreadSerMvt extends Thread
     int Capacité;
     int NbrArticle = 0;
     boolean connected = false;
-    List<Socket> SocketClient;
-    public ThreadSerMvt(int p,List<Socket> c)
+    List<ClientSocket> SocketClient;
+    public ThreadSerMvt(int p,List<ClientSocket> c)
     {
         port = p;
         SocketClient = c;
@@ -55,7 +56,7 @@ public class ThreadSerMvt extends Thread
         catch (IOException ex) 
         {
             System.err.println("Erreur de port d'écoute ! [" + ex + "]");
-            System.exit(1);
+            //System.exit(1);
         }
         while(!isInterrupted())
         {
@@ -63,13 +64,16 @@ public class ThreadSerMvt extends Thread
             try 
             {
                 CSocket = SSocket.accept();
-                SocketClient.add(CSocket);
+                ClientSocket temp = new ClientSocket();
+                temp.setCSocket(CSocket);
+                temp.setPortUrgence(50014);
+                SocketClient.add(temp);
                 connected = true;
             } 
             catch (IOException ex) 
             {
                 System.err.println("Erreur de port d'écoute ! [" + ex + "]");
-                System.exit(1);
+                //System.exit(1);
             }
 
             System.out.println("Connexion établie !");
@@ -85,7 +89,7 @@ public class ThreadSerMvt extends Thread
                 catch (IOException ex) 
                 {
                     System.err.println("Erreur lors du receive ! [" + ex + "]");
-                    System.exit(1);
+                    //System.exit(1);
                 }
 
                 command = getCommand(requete);
@@ -612,7 +616,7 @@ public class ThreadSerMvt extends Thread
         } catch (IOException ex) {
             Logger.getLogger(ThreadSerMvt.class.getName()).log(Level.SEVERE, null, ex);
         }
-        SocketClient.remove(CSocket);
+        
         
     }
     // </editor-fold>
@@ -620,8 +624,16 @@ public class ThreadSerMvt extends Thread
     // <editor-fold defaultstate="collapsed" desc="EOC">
     private void traiteEOC(List<String> parameters) {
         try {
-            CSocket.close();
-            SocketClient.remove(CSocket);
+           
+            for(int l= 0;l<SocketClient.size();l++)
+            {
+                ClientSocket temp = SocketClient.get(l);
+                if(temp.getCSocket() == CSocket)
+                {
+                    SocketClient.remove(temp);
+                }
+            }
+             CSocket.close();
             connected = false;
         } catch (IOException ex) {
             Logger.getLogger(ThreadSerMvt.class.getName()).log(Level.SEVERE, null, ex);

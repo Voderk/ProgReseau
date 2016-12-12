@@ -5,9 +5,8 @@
  */
 package serveur_appareils;
 
-import java.io.FileInputStream;
+import RequeteClient.ClientSocket;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -15,7 +14,7 @@ import java.util.Properties;
 public class Serveur_Appareils {
     
     private static SourceTache tachesAExecuter = new ListeTaches();
-    private static List<Socket> Clients = new ArrayList<Socket>();
+    private static List<ClientSocket> Clients = new ArrayList<ClientSocket>();
     
     public static void main(String[] args) throws IOException {
             

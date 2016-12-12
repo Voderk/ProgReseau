@@ -5,8 +5,10 @@
  */
 package serveur_appareils;
 
+import RequeteClient.ClientSocket;
 import RequeteClient.ClientAppareil;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -22,10 +24,11 @@ import static serveur_appareils.Serveur_Appareils.ReadProperties;
 public class ThreadServeurVente extends Thread{
     private int port;
     private SourceTache tachesAExecuter;
-    private List<Socket> Clients;
+    private List<ClientSocket> Clients;
     private ServerSocket SSocket;
+    int nbrClient = 0;
     
-    public ThreadServeurVente(int p,SourceTache st,List<Socket> c)
+    public ThreadServeurVente(int p,SourceTache st,List<ClientSocket> c)
     {
         port = p;
         tachesAExecuter = st;
@@ -49,7 +52,7 @@ public class ThreadServeurVente extends Thread{
         //Création d'un pool de thread
         for (int i=0; i<nbrThread; i++) // 3 devrait être constante ou une propriété du fichier de config
         {
-            ThreadClient thr = new ThreadClient (tachesAExecuter,"Thread du pool n°"+String.valueOf(i),Clients);
+            ThreadClient thr = new ThreadClient (tachesAExecuter,"Thread du pool n°"+String.valueOf(i));
             thr.start();
         }
         
@@ -60,7 +63,17 @@ public class ThreadServeurVente extends Thread{
             {
                 System.out.println("***Serveur en attente***");
                 CSocket = SSocket.accept();
-                Clients.add(CSocket);
+                ClientSocket temp = new ClientSocket();
+                temp.setCSocket(CSocket);
+                int portUrgence = Integer.parseInt(ReadProperties("PortUrgence")) + nbrClient;
+                temp.setPortUrgence(portUrgence);
+                Clients.add(temp);
+                nbrClient++;
+                
+                ObjectOutputStream oos = new ObjectOutputStream(CSocket.getOutputStream());
+                oos.writeInt(portUrgence);
+                oos.flush();
+                
             } 
             catch (IOException ex) 
             {
@@ -79,9 +92,6 @@ public class ThreadServeurVente extends Thread{
             {
                 System.out.println("Pas de travail mis dans la file");
             }
-            
-            
-            
             
         }
         

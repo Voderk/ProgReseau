@@ -958,6 +958,7 @@ public class Applic_Appareil extends javax.swing.JFrame {
 
     private void LogoutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutMenuItemActionPerformed
         
+        VidePanier();
         String temp =Login+"#"+Password;
         ReponseClient rep = null;
         try {
@@ -1213,6 +1214,44 @@ public class Applic_Appareil extends javax.swing.JFrame {
             }
     }
     // </editor-fold>
+    
+    public void StopApplic()
+    {
+        VidePanier();
+        String temp =Login+"#"+Password;
+        ReponseClient rep = null;
+        try {
+            sendMessage(RequeteClient.REQUEST_LOGOUT,temp);
+        } catch (IOException ex) 
+        {
+            System.err.println("Erreur lors du send !: "+ex.getMessage());
+        }
+        
+        try 
+        {
+            rep = receiveMessage();
+                    
+        } 
+        catch (IOException ex) 
+        {
+            System.err.println("Erreur lors du receive !: "+ex.getMessage());
+        } 
+        catch (ClassNotFoundException ex) 
+        {
+            Logger.getLogger(Applic_Appareil.class.getName()).log(Level.SEVERE, null, ex);   
+        }
+        
+        if(rep.getCode() == 1)
+        {
+            try {
+                CSocket.close();
+            } catch (IOException ex) {
+                System.err.println("Erreur lors du close !: "+ex.getMessage());
+            }
+            
+            System.exit(1);   
+        }                 
+    }
     
     /**
      * @param args the command line arguments

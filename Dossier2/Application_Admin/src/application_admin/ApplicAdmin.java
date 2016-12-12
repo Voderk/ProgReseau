@@ -35,6 +35,7 @@ public class ApplicAdmin extends javax.swing.JFrame {
     }
     Boolean connected = false;
     String AdminLogin = null;
+    String AdminPassword = null;
     Socket AdminSocket = null;
     /**
      * This method is called from within the constructor to initialize the form.
@@ -104,6 +105,11 @@ public class ApplicAdmin extends javax.swing.JFrame {
                 LogoutButtonMouseClicked(evt);
             }
         });
+        LogoutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LogoutButtonActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(LogoutButton);
 
         ExitButton.setText("Exit");
@@ -167,7 +173,10 @@ public class ApplicAdmin extends javax.swing.JFrame {
                 RequeteAdmin req = new RequeteAdmin(RequeteAdmin.LOGINA,chu);
                 ObjectOutputStream oos = null;
 
-               
+                AdminLogin = login.getLogin();
+                AdminPassword = login.getPwd();
+                
+                
                 oos = new ObjectOutputStream(AdminSocket.getOutputStream());
                 oos.writeObject(req);
                 oos.flush();
@@ -232,11 +241,60 @@ public class ApplicAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_LoginButtonMouseClicked
 
     private void LogoutButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoutButtonMouseClicked
+        
         SwitchState(false);
         ListeClients.removeAll();
         connected = false;
-        AdminLogin = null;
         /*Envoi message de deconnexion param AdminLogin*/
+        
+        
+        ReponseAdmin rep = null;
+        try 
+        {
+            String chu = AdminLogin+"#" + AdminPassword;
+
+            RequeteAdmin req = new RequeteAdmin(RequeteAdmin.LOGOUTA,chu);
+            ObjectOutputStream oos = null;
+
+            oos = new ObjectOutputStream(AdminSocket.getOutputStream());
+            oos.writeObject(req);
+            oos.flush();
+            
+            ObjectInputStream ois = null;
+
+            ois = new ObjectInputStream(AdminSocket.getInputStream());
+            rep = (ReponseAdmin) ois.readObject();   
+
+
+            if(rep.getCode() == -1)
+            {
+                JOptionPane.showMessageDialog(this,rep.getChargeUtile()+"\nVeuillez quitter l'appliaction","Erreur !",JOptionPane.WARNING_MESSAGE,null);
+            }
+            else
+            {
+                if(rep.getChargeUtile().equals("OK"))
+                {
+                    AdminSocket.close();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this,rep.getChargeUtile(),"Erreur !",JOptionPane.WARNING_MESSAGE,null);
+                    AdminSocket.close();
+                }
+            }  
+        }
+        catch (UnknownHostException e)
+        { 
+            System.err.println("Erreur ! Host non trouvé [" + e + "]"); 
+        }
+        catch (IOException e)
+        { 
+            System.err.println("Erreur ! Pas de connexion ? [" + e + "]"); 
+        } 
+        catch (ClassNotFoundException e) 
+        {
+            System.err.println("Erreur ! Class not found ? [" + e + "]");
+        }
     }//GEN-LAST:event_LogoutButtonMouseClicked
 
     private void RefreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RefreshMouseClicked
@@ -301,6 +359,11 @@ public class ApplicAdmin extends javax.swing.JFrame {
             System.err.println("Erreur ! Class not found ? [" + ex + "]");
         }*/
     }//GEN-LAST:event_StopServerActionPerformed
+
+    private void LogoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutButtonActionPerformed
+        
+        
+    }//GEN-LAST:event_LogoutButtonActionPerformed
 
     /**
      * @param args the command line arguments
